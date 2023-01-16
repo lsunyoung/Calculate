@@ -77,6 +77,7 @@ struct ContentView: View {
     
     @State private var totalNumber : String = "0"
     @State var tempNumber: Int = 0
+    @State var Percent: Double = 0.01
     @State var operatorType: ButtonType = .clear
     @State var isNotEditing: Bool = true
     
@@ -174,6 +175,11 @@ struct ContentView: View {
                                         operatorType = .devide
 //                                        totalNumber = "0"
                                         isNotEditing = true
+                                    } else if item == .percent {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .percent
+//                                        totalNumber = "0"
+                                        isNotEditing = true
                                     } else if item == .equal {
                                         if operatorType == .plus {
                                             totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
@@ -183,12 +189,13 @@ struct ContentView: View {
                                             totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))
                                         } else if operatorType == .devide {
                                             totalNumber = String(tempNumber / (Int(totalNumber) ?? 0))
+                                        } else if operatorType == .percent {
+                                            totalNumber = String(tempNumber + ((Int(totalNumber) ?? 0) * Int(Double(Percent))))
                                         }
                                         
                                     } else {
                                         totalNumber += item.buttonDisplayName
                                     }
-                                    
                                 }
                             } label: {
                                 Text(item.buttonDisplayName)
