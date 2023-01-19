@@ -200,8 +200,8 @@ struct ContentView: View {
                             } label: {
                                 Text(item.buttonDisplayName)
 //                                    .bold()
-//                                    .frame(width: item == .some(.zero) ? 160 : 77, height: 77)
-                                    .frame(width: calculatebuttonWidth(button: item), height: calculatebuttonHeight(button: item))
+                                    .frame(width: item == .some(.zero) ? 160 : 77, height: 77)
+//                                    .frame(width: calculatebuttonWidth(button: item), height: calculatebuttonHeight(button: item))
                                     .background(item.backgroundColor)
                                     .cornerRadius((40))
                                     .foregroundColor(item.forgroundColor)
