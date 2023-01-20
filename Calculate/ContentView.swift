@@ -100,7 +100,6 @@ struct ContentView: View {
                         .padding()
                         .font(.system(size: 70))
                         .foregroundColor(.black)
-                      
                 }
 //                HStack {
 //                    Button {
@@ -137,24 +136,41 @@ struct ContentView: View {
                         ForEach(line, id : \.self) { item in
                             Button {
 //                                if totalNumber == "0" {
+//                                        totalNumber = "0"
                                 if isNotEditing {
                                     if item == .clear {
-                                        totalNumber = "0"
                                         isNotEditing = true
+                                        totalNumber = "0"
+                                        operatorType = .clear
+
                                     } else if item == .plus ||
                                                 item == .minus ||
                                                 item == .multiple ||
-                                                item == .devide {
-                                        totalNumber = "Error"
+                                                item == .devide ||
+                                                item == .percent {
+                                        totalNumber = "Error" //입력 값 없이 연산 선택 시 에러 메세지
+                                    } else if item == .opposite {
+                                        operatorType = .opposite
+                                        if totalNumber ==  "0" {
+                                            totalNumber = "Error"
+                                        } else {
+                                            tempNumber = Int(totalNumber) ?? 0
+                                            if (0 > Int(totalNumber) ?? 0) {
+                                                totalNumber = String(+tempNumber)
+                                            }
+                                            totalNumber = String(-tempNumber)
+                                        }
                                     } else {
                                         totalNumber = item.buttonDisplayName
+                                        isNotEditing = false
                                     }
-                                    isNotEditing = false
+                                    
                                 } else {
                                     // 첫 번째 숫자 연산자 두 번째 숫자
                                     if item == .clear {
-                                        totalNumber = "0"
                                         isNotEditing = true
+                                        totalNumber = "0"
+                                        operatorType = .clear
                                     } else if item == .plus {
                                         tempNumber = Int(totalNumber) ?? 0 //숫자를 저장
                                         operatorType = .plus //더하기를 한다
@@ -178,9 +194,17 @@ struct ContentView: View {
                                     } else if item == .percent {
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .percent
-//                                        totalNumber = "0"
                                         isNotEditing = true
-                                    } else if item == .equal {
+                                    } else if item == .opposite {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        if (0 > Int(totalNumber) ?? 0) {
+                                            totalNumber = String(+tempNumber)
+                                            isNotEditing = true
+                                        }
+                                        totalNumber = String(-tempNumber)
+                                        isNotEditing = true
+                                        
+                                    } else if item == .equal { //결과
                                         if operatorType == .plus {
                                             totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
                                         } else if operatorType == .multiple {
